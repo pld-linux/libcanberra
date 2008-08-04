@@ -37,7 +37,7 @@ Summary:	Development Files for libcanberra Client Development
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	gtk-doc
-Requires:	gtk2-devel
+Requires:	gtk+2-devel
 Requires:	pkgconfig
 
 %description devel
