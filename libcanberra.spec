@@ -1,10 +1,11 @@
 Summary:	libcanberra - the portable sound event library
 Name:		libcanberra
-Version:	0.5
+Version:	0.6
 Release:	1
 Group:		Libraries
 Source0:	http://0pointer.de/public/%{name}-%{version}.tar.gz
-# Source0-md5:	1d8abd71613764650a0e2359584d7cdb
+# Source0-md5:	bec9dc81796babef76f2d687024daffb
+Source1:	%{name}-xinit.sh
 License:	LGPLv2+
 URL:		http://git.0pointer.de/?p=libcanberra.git;a=summary
 BuildRequires:	alsa-lib-devel
@@ -84,6 +85,9 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+install -d $RPM_BUILD_ROOT/etc/X11/xinit/xinitrc.d/
+install %SOURCE1 $RPM_BUILD_ROOT/etc/X11/xinit/xinitrc.d/libcanberra.sh
+
 rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules/*.la
 rm $RPM_BUILD_ROOT%{_libdir}/libcanberra/libcanberra-multi.so
 rm $RPM_BUILD_ROOT%{_libdir}/libcanberra/*.la
@@ -107,6 +111,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libcanberra-gtk.so.0
 %{_libdir}/gtk-2.0/modules/libcanberra-gtk-module.so
 %attr(755,root,root) %{_bindir}/canberra-gtk-play
+%attr(755,root,root) /etc/X11/xinit/xinitrc.d/libcanberra.sh
 %{_datadir}/gnome/autostart/libcanberra-login-sound.desktop
 %{_datadir}/gnome/shutdown/libcanberra-logout-sound.sh
 
