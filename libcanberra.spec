@@ -109,7 +109,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcanberra-gtk.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libcanberra-gtk.so.0
-%{_libdir}/gtk-2.0/modules/libcanberra-gtk-module.so
+%attr(755,root,root) %{_libdir}/gtk-2.0/modules/libcanberra-gtk-module.so
 %attr(755,root,root) %{_bindir}/canberra-gtk-play
 %attr(755,root,root) /etc/X11/xinit/xinitrc.d/libcanberra.sh
 %{_datadir}/gnome/autostart/libcanberra-login-sound.desktop
