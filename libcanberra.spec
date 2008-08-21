@@ -1,21 +1,22 @@
 Summary:	libcanberra - the portable sound event library
-Name:		libcanberra
+Name:		libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Version:	0.7
 Release:	1
+License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
 # Source0-md5:	ad2cde7bc6ec1080559cac3b86ba4036
 Source1:	%{name}-xinit.sh
-License:	LGPLv2+
 URL:		http://0pointer.de/lennart/projects/libcanberra/
-BuildRequires:	alsa-lib-devel
-BuildRequires:	autoconf
-BuildRequires:	automake
-BuildRequires:	gtk+2-devel
-BuildRequires:	gtk-doc
+BuildRequires:	alsa-lib-devel >= 1.0.0
+BuildRequires:	autoconf >= 2.62
+BuildRequires:	automake >= 1:1.9
+BuildRequires:	gtk+2-devel >= 2:2.13.4
+BuildRequires:	gtk-doc >= 1.9
 BuildRequires:	libltdl-devel
 BuildRequires:	libtool
 BuildRequires:	libvorbis-devel
+BuildRequires:	pkgconfig
 BuildRequires:	pulseaudio-devel >= 0.9.11-1
 Requires:	pulseaudio-libs >= 0.9.11-1
 Requires:	sound-theme-freedesktop
@@ -25,24 +26,72 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 A small and lightweight implementation of the XDG Sound Theme
 Specification (http://0pointer.de/public/sound-theme-spec.html).
 
-%package gtk2
-Summary:	Gtk+ Bindings for libcanberra
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description gtk2
-Gtk+ bindings for libcanberra
+%description -l pl.UTF-8
+Mała i lekka implementacja specyfikacji XDG Sound Theme
+(http://0pointer.de/public/sound-theme-spec.html).
 
 %package devel
-Summary:	Development Files for libcanberra Client Development
+Summary:	Header files for libcanberra library
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	gtk-doc
-Requires:	gtk+2-devel
-Requires:	pkgconfig
 
 %description devel
-Development Files for libcanberra Client Development
+Header files for libcanberra library.
+
+%description devel -l pl.UTF-8
+Pliki nagłówkowe biblioteki libcanberra.
+
+%package static
+Summary:	Static libcanberra library
+Summary(pl.UTF-8):	Statyczna biblioteka libcanberra
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+
+%description static
+Static libcanberra library.
+
+%description static -l pl.UTF-8
+Statyczna biblioteka libcanberra.
+
+%package gtk
+Summary:	GTK+ bindings for libcanberra library
+Summary(pl.UTF-8):	Wiązania GTK+ do biblioteki libcanberra
+Group:		X11/Libraries
+Requires:	%{name} = %{version}-%{release}
+Provides:	libcanberra-gtk2
+Obsoletes:	libcanberra-gtk2
+
+%description gtk
+GTK+ bindings for libcanberra library.
+
+%description gtk -l pl.UTF-8
+Wiązania GTK+ do biblioteki libcanberra.
+
+%package gtk-devel
+Summary:	Header files for libcanberra-gtk library
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra-gtk
+Group:		X11/Development/Libraries
+Requires:	%{name}-gtk = %{version}-%{release}
+Requires:	gtk+2-devel >= 2:2.13.4
+
+%description gtk-devel
+Header files for libcanberra-gtk library.
+
+%description gtk-devel -l pl.UTF-8
+Pliki nagłówkowe biblioteki libcanberra-gtk.
+
+%package gtk-static
+Summary:	Static libcanberra-gtk library
+Summary(pl.UTF-8):	Statyczna biblioteka libcanberra-gtk
+Group:		X11/Development/Libraries
+Requires:	%{name}-gtk-devel = %{version}-%{release}
+
+%description gtk-static
+Static libcanberra-gtk library.
+
+%description gtk-static -l pl.UTF-8
+Statyczna biblioteka libcanberra-gtk.
 
 %package apidocs
 Summary:	libcanberra API documentation
@@ -56,23 +105,16 @@ libcanberra API documentation.
 %description apidocs -l pl.UTF-8
 Dokumentacja API libcanberra.
 
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
-
-%post gtk2 -p /sbin/ldconfig
-%postun gtk2 -p /sbin/ldconfig
-
 %prep
 %setup -q
 
 %build
 %{__libtoolize}
-%{__autoheader}
 %{__aclocal} -I m4
 %{__autoconf}
+%{__autoheader}
 %{__automake}
 %configure \
-	--disable-static \
 	--disable-rpath \
 	--enable-pulse \
 	--enable-alsa \
@@ -82,49 +124,67 @@ Dokumentacja API libcanberra.
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT/etc/X11/xinit/xinitrc.d
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT/etc/X11/xinit/xinitrc.d/
-install %SOURCE1 $RPM_BUILD_ROOT/etc/X11/xinit/xinitrc.d/libcanberra.sh
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/X11/xinit/xinitrc.d/libcanberra.sh
 
-rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules/*.la
+rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules/*.{a,la}
 rm $RPM_BUILD_ROOT%{_libdir}/libcanberra/libcanberra-multi.so
-rm $RPM_BUILD_ROOT%{_libdir}/libcanberra/*.la
+rm $RPM_BUILD_ROOT%{_libdir}/libcanberra/*.{a,la}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
+
+%post gtk -p /sbin/ldconfig
+%postun gtk -p /sbin/ldconfig
+
 %files
 %defattr(644,root,root,755)
-%doc README LGPL
+%doc README
 %attr(755,root,root) %{_libdir}/libcanberra.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libcanberra.so.0
 %dir %{_libdir}/libcanberra
-%{_libdir}/libcanberra/libcanberra-alsa.so
-%{_libdir}/libcanberra/libcanberra-pulse.so
-%{_libdir}/libcanberra/libcanberra-null.so
-
-%files gtk2
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libcanberra-gtk.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libcanberra-gtk.so.0
-%attr(755,root,root) %{_libdir}/gtk-2.0/modules/libcanberra-gtk-module.so
-%attr(755,root,root) %{_bindir}/canberra-gtk-play
-%attr(755,root,root) /etc/X11/xinit/xinitrc.d/libcanberra.sh
-%{_datadir}/gnome/autostart/libcanberra-login-sound.desktop
-%{_datadir}/gnome/shutdown/libcanberra-logout-sound.sh
+%attr(755,root,root) %{_libdir}/libcanberra/libcanberra-alsa.so
+%attr(755,root,root) %{_libdir}/libcanberra/libcanberra-pulse.so
+%attr(755,root,root) %{_libdir}/libcanberra/libcanberra-null.so
 
 %files devel
 %defattr(644,root,root,755)
-%{_includedir}/canberra-gtk.h
-%{_includedir}/canberra.h
-%attr(755,root,root) %{_libdir}/libcanberra-gtk.so
 %attr(755,root,root) %{_libdir}/libcanberra.so
-%{_libdir}/libcanberra-gtk.la
 %{_libdir}/libcanberra.la
-%{_pkgconfigdir}/libcanberra-gtk.pc
+%{_includedir}/canberra.h
 %{_pkgconfigdir}/libcanberra.pc
+
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/libcanberra.a
+
+%files gtk
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/canberra-gtk-play
+%attr(755,root,root) %{_libdir}/libcanberra-gtk.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libcanberra-gtk.so.0
+%attr(755,root,root) %{_libdir}/gtk-2.0/modules/libcanberra-gtk-module.so
+%attr(755,root,root) /etc/X11/xinit/xinitrc.d/libcanberra.sh
+%{_datadir}/gnome/autostart/libcanberra-login-sound.desktop
+%attr(755,root,root) %{_datadir}/gnome/shutdown/libcanberra-logout-sound.sh
+
+%files gtk-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libcanberra-gtk.so
+%{_libdir}/libcanberra-gtk.la
+%{_includedir}/canberra-gtk.h
+%{_pkgconfigdir}/libcanberra-gtk.pc
+
+%files gtk-static
+%defattr(644,root,root,755)
+%{_libdir}/libcanberra-gtk.a
 
 %files apidocs
 %defattr(644,root,root,755)
