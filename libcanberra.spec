@@ -1,5 +1,6 @@
 Summary:	libcanberra - the portable sound event library
-Name:		libcanberra - przenośna biblioteka zdarzeń dźwiękowych
+Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
+Name:		libcanberra
 Version:	0.7
 Release:	1
 License:	LGPL v2+
@@ -72,6 +73,7 @@ Wiązania GTK+ do biblioteki libcanberra.
 Summary:	Header files for libcanberra-gtk library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra-gtk
 Group:		X11/Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
 Requires:	%{name}-gtk = %{version}-%{release}
 Requires:	gtk+2-devel >= 2:2.13.4
 
@@ -116,9 +118,9 @@ Dokumentacja API libcanberra.
 %{__automake}
 %configure \
 	--disable-rpath \
-	--enable-pulse \
 	--enable-alsa \
 	--enable-null \
+	--enable-pulse \
 	--with-html-dir=%{_gtkdocdir}
 %{__make}
 
@@ -138,11 +140,11 @@ rm $RPM_BUILD_ROOT%{_libdir}/libcanberra/*.{a,la}
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
-%post gtk -p /sbin/ldconfig
-%postun gtk -p /sbin/ldconfig
+%post	gtk -p /sbin/ldconfig
+%postun	gtk -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
