@@ -1,17 +1,18 @@
 Summary:	libcanberra - the portable sound event library
 Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Name:		libcanberra
-Version:	0.7
+Version:	0.8
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
-# Source0-md5:	ad2cde7bc6ec1080559cac3b86ba4036
+# Source0-md5:	7e94da74f5b1e2029916799b915fdc74
 Source1:	%{name}-xinit.sh
 URL:		http://0pointer.de/lennart/projects/libcanberra/
 BuildRequires:	alsa-lib-devel >= 1.0.0
 BuildRequires:	autoconf >= 2.62
 BuildRequires:	automake >= 1:1.9
+BuildRequires:	gstreamer-devel >= 0.10.15
 BuildRequires:	gtk+2-devel >= 2:2.13.4
 BuildRequires:	gtk-doc >= 1.9
 BuildRequires:	libltdl-devel
@@ -119,7 +120,9 @@ Dokumentacja API libcanberra.
 %configure \
 	--disable-rpath \
 	--enable-alsa \
+	--enable-gstreamer \
 	--enable-null \
+	--enable-oss \
 	--enable-pulse \
 	--with-html-dir=%{_gtkdocdir}
 %{__make}
@@ -153,6 +156,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libcanberra.so.0
 %dir %{_libdir}/libcanberra
 %attr(755,root,root) %{_libdir}/libcanberra/libcanberra-alsa.so
+%attr(755,root,root) %{_libdir}/libcanberra/libcanberra-gstreamer.so
+%attr(755,root,root) %{_libdir}/libcanberra/libcanberra-oss.so
 %attr(755,root,root) %{_libdir}/libcanberra/libcanberra-pulse.so
 %attr(755,root,root) %{_libdir}/libcanberra/libcanberra-null.so
 
