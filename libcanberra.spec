@@ -2,7 +2,7 @@ Summary:	libcanberra - the portable sound event library
 Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Name:		libcanberra
 Version:	0.9
-Release:	1
+Release:	2
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
@@ -108,6 +108,18 @@ libcanberra API documentation.
 %description apidocs -l pl.UTF-8
 Dokumentacja API libcanberra.
 
+%package gnome
+Summary:	Files required to play login sound in GNOME
+Summary(pl.UTF-8):	Pliki potrzebne do odtwarzania dźwięku logowania w GNOME
+Group:		Applications
+Requires:	%{name}-gtk = %{version}-%{release}
+
+%description gnome
+Files required to play login sound in GNOME.
+
+%description gnome -l pl.UTF-8
+Pliki potrzebne do odtwarzania dźwięku logowania w GNOME.
+
 %prep
 %setup -q
 
@@ -180,8 +192,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libcanberra-gtk.so.0
 %attr(755,root,root) %{_libdir}/gtk-2.0/modules/libcanberra-gtk-module.so
 %attr(755,root,root) /etc/X11/xinit/xinitrc.d/libcanberra.sh
-%{_datadir}/gnome/autostart/libcanberra-login-sound.desktop
-%attr(755,root,root) %{_datadir}/gnome/shutdown/libcanberra-logout-sound.sh
 
 %files gtk-devel
 %defattr(644,root,root,755)
@@ -197,3 +207,8 @@ rm -rf $RPM_BUILD_ROOT
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/%{name}
+
+%files gnome
+%defattr(644,root,root,755)
+%{_datadir}/gnome/autostart/libcanberra-login-sound.desktop
+%attr(755,root,root) %{_datadir}/gnome/shutdown/libcanberra-logout-sound.sh
