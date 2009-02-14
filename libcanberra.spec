@@ -1,28 +1,29 @@
 Summary:	libcanberra - the portable sound event library
 Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Name:		libcanberra
-Version:	0.9
-Release:	3
+Version:	0.11
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
-# Source0-md5:	1c6c63d5461e6a1ae443a124d49f8fb6
-Source1:	%{name}-xinit.sh
+# Source0-md5:	c661db14cb0b1fe9b6963defacc3bba6
 URL:		http://0pointer.de/lennart/projects/libcanberra/
 BuildRequires:	alsa-lib-devel >= 1.0.0
-BuildRequires:	autoconf >= 2.62
-BuildRequires:	automake >= 1:1.9
+BuildRequires:	autoconf >= 2.63
+BuildRequires:	automake >= 1:1.10
 BuildRequires:	gstreamer-devel >= 0.10.15
 BuildRequires:	gtk+2-devel >= 2:2.13.4
 BuildRequires:	gtk-doc >= 1.9
 BuildRequires:	libltdl-devel
-BuildRequires:	libtool
+BuildRequires:	libtool >= 2:2.2.0
 BuildRequires:	libvorbis-devel
 BuildRequires:	pkgconfig
 BuildRequires:	pulseaudio-devel >= 0.9.11-1
 Requires:	pulseaudio-libs >= 0.9.11-1
 Requires:	sound-theme-freedesktop
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		backenddir	%{_libdir}/libcanberra-%{version}
 
 %description
 A small and lightweight implementation of the XDG Sound Theme
@@ -112,6 +113,7 @@ Dokumentacja API libcanberra.
 Summary:	Files required to play login sound in GNOME
 Summary(pl.UTF-8):	Pliki potrzebne do odtwarzania dźwięku logowania w GNOME
 Group:		Applications
+Requires(post,preun):	GConf2
 Requires:	%{name}-gtk = %{version}-%{release}
 
 %description gnome
@@ -130,6 +132,7 @@ Pliki potrzebne do odtwarzania dźwięku logowania w GNOME.
 %{__autoheader}
 %{__automake}
 %configure \
+	--disable-schemas-install \
 	--disable-ltdl-install \
 	--disable-rpath \
 	--enable-alsa \
@@ -137,21 +140,19 @@ Pliki potrzebne do odtwarzania dźwięku logowania w GNOME.
 	--enable-null \
 	--enable-oss \
 	--enable-pulse \
+	--enable-static \
 	--with-html-dir=%{_gtkdocdir}
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/X11/xinit/xinitrc.d
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/X11/xinit/xinitrc.d/libcanberra.sh
-
 rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules/*.{a,la}
-rm $RPM_BUILD_ROOT%{_libdir}/libcanberra/libcanberra-multi.so
-rm $RPM_BUILD_ROOT%{_libdir}/libcanberra/*.{a,la}
+rm $RPM_BUILD_ROOT%{backenddir}/*.{a,la}
+rm $RPM_BUILD_ROOT%{_datadir}/doc/libcanberra/README
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -162,17 +163,24 @@ rm -rf $RPM_BUILD_ROOT
 %post	gtk -p /sbin/ldconfig
 %postun	gtk -p /sbin/ldconfig
 
+%post gnome
+%gconf_schema_install libcanberra.schemas
+
+%preun gnome
+%gconf_schema_uninstall libcanberra.schemas
+
 %files
 %defattr(644,root,root,755)
 %doc README
 %attr(755,root,root) %{_libdir}/libcanberra.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libcanberra.so.0
-%dir %{_libdir}/libcanberra
-%attr(755,root,root) %{_libdir}/libcanberra/libcanberra-alsa.so
-%attr(755,root,root) %{_libdir}/libcanberra/libcanberra-gstreamer.so
-%attr(755,root,root) %{_libdir}/libcanberra/libcanberra-oss.so
-%attr(755,root,root) %{_libdir}/libcanberra/libcanberra-pulse.so
-%attr(755,root,root) %{_libdir}/libcanberra/libcanberra-null.so
+%dir %{backenddir}
+%attr(755,root,root) %{backenddir}/libcanberra-alsa.so
+%attr(755,root,root) %{backenddir}/libcanberra-gstreamer.so
+%attr(755,root,root) %{backenddir}/libcanberra-oss.so
+%attr(755,root,root) %{backenddir}/libcanberra-pulse.so
+%attr(755,root,root) %{backenddir}/libcanberra-null.so
+%attr(755,root,root) %{backenddir}/libcanberra-multi.so
 
 %files devel
 %defattr(644,root,root,755)
@@ -191,7 +199,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libcanberra-gtk.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libcanberra-gtk.so.0
 %attr(755,root,root) %{_libdir}/gtk-2.0/modules/libcanberra-gtk-module.so
-%attr(755,root,root) /etc/X11/xinit/xinitrc.d/libcanberra.sh
 
 %files gtk-devel
 %defattr(644,root,root,755)
@@ -210,5 +217,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files gnome
 %defattr(644,root,root,755)
+%{_sysconfdir}/gconf/schemas/libcanberra.schemas
 %{_datadir}/gnome/autostart/libcanberra-login-sound.desktop
 %attr(755,root,root) %{_datadir}/gnome/shutdown/libcanberra-logout-sound.sh
