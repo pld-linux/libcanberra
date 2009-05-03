@@ -1,12 +1,12 @@
 Summary:	libcanberra - the portable sound event library
 Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Name:		libcanberra
-Version:	0.11
+Version:	0.12
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
-# Source0-md5:	c661db14cb0b1fe9b6963defacc3bba6
+# Source0-md5:	01a1952e861defa6de9d193558f2a732
 URL:		http://0pointer.de/lennart/projects/libcanberra/
 BuildRequires:	alsa-lib-devel >= 1.0.0
 BuildRequires:	autoconf >= 2.63
@@ -147,7 +147,7 @@ Pliki potrzebne do odtwarzania dźwięku logowania w GNOME.
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
+%{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules/*.{a,la}
