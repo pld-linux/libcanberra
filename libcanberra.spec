@@ -1,18 +1,18 @@
 Summary:	libcanberra - the portable sound event library
 Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Name:		libcanberra
-Version:	0.12
-Release:	2
+Version:	0.22
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
-# Source0-md5:	01a1952e861defa6de9d193558f2a732
+# Source0-md5:	e24e2f956fedfbcc58edfa40471b18d8
 URL:		http://0pointer.de/lennart/projects/libcanberra/
 BuildRequires:	alsa-lib-devel >= 1.0.0
 BuildRequires:	autoconf >= 2.63
 BuildRequires:	automake >= 1:1.10
 BuildRequires:	gstreamer-devel >= 0.10.15
-BuildRequires:	gtk+2-devel >= 2:2.13.4
+BuildRequires:	gtk+2-devel >= 2:2.14.0
 BuildRequires:	gtk-doc >= 1.9
 BuildRequires:	libltdl-devel
 BuildRequires:	libtool >= 2:2.2.0
@@ -77,7 +77,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra-gtk
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	%{name}-gtk = %{version}-%{release}
-Requires:	gtk+2-devel >= 2:2.13.4
+Requires:	gtk+2-devel >= 2:2.14.0
 
 %description gtk-devel
 Header files for libcanberra-gtk library.
@@ -133,8 +133,6 @@ Pliki potrzebne do odtwarzania dźwięku logowania w GNOME.
 %{__automake}
 %configure \
 	--disable-schemas-install \
-	--disable-ltdl-install \
-	--disable-rpath \
 	--enable-alsa \
 	--enable-gstreamer \
 	--enable-null \
@@ -188,6 +186,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libcanberra.la
 %{_includedir}/canberra.h
 %{_pkgconfigdir}/libcanberra.pc
+%{_datadir}/vala/vapi/libcanberra.vapi
 
 %files static
 %defattr(644,root,root,755)
@@ -206,6 +205,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libcanberra-gtk.la
 %{_includedir}/canberra-gtk.h
 %{_pkgconfigdir}/libcanberra-gtk.pc
+%{_datadir}/vala/vapi/libcanberra-gtk.vapi
 
 %files gtk-static
 %defattr(644,root,root,755)
@@ -218,5 +218,6 @@ rm -rf $RPM_BUILD_ROOT
 %files gnome
 %defattr(644,root,root,755)
 %{_sysconfdir}/gconf/schemas/libcanberra.schemas
+%{_datadir}/gdm/autostart/LoginWindow/libcanberra-ready-sound.desktop
 %{_datadir}/gnome/autostart/libcanberra-login-sound.desktop
 %attr(755,root,root) %{_datadir}/gnome/shutdown/libcanberra-logout-sound.sh
