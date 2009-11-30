@@ -8,6 +8,7 @@ Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
 # Source0-md5:	e24e2f956fedfbcc58edfa40471b18d8
 URL:		http://0pointer.de/lennart/projects/libcanberra/
+BuildRequires:	GConf2-devel
 BuildRequires:	alsa-lib-devel >= 1.0.0
 BuildRequires:	autoconf >= 2.63
 BuildRequires:	automake >= 1:1.10
