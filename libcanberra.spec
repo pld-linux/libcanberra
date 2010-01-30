@@ -127,6 +127,7 @@ Pliki potrzebne do odtwarzania dźwięku logowania w GNOME.
 %setup -q
 
 %build
+%{__gtkdocize}
 %{__libtoolize}
 %{__aclocal} -I m4
 %{__autoconf}
@@ -140,6 +141,7 @@ Pliki potrzebne do odtwarzania dźwięku logowania w GNOME.
 	--enable-oss \
 	--enable-pulse \
 	--enable-static \
+	--enable-gtk-doc \
 	--with-html-dir=%{_gtkdocdir}
 %{__make}
 
