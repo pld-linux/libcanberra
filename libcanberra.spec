@@ -1,12 +1,12 @@
 Summary:	libcanberra - the portable sound event library
 Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Name:		libcanberra
-Version:	0.22
-Release:	4
+Version:	0.23
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
-# Source0-md5:	e24e2f956fedfbcc58edfa40471b18d8
+# Source0-md5:	83fb2fb7608c77f91904e12a867534fd
 URL:		http://0pointer.de/lennart/projects/libcanberra/
 BuildRequires:	GConf2-devel
 BuildRequires:	alsa-lib-devel >= 1.0.0
