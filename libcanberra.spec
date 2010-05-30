@@ -1,12 +1,12 @@
 Summary:	libcanberra - the portable sound event library
 Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Name:		libcanberra
-Version:	0.23
+Version:	0.24
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
-# Source0-md5:	83fb2fb7608c77f91904e12a867534fd
+# Source0-md5:	23de3d11abd4920c6c9560e3a566e04d
 URL:		http://0pointer.de/lennart/projects/libcanberra/
 BuildRequires:	GConf2-devel
 BuildRequires:	alsa-lib-devel >= 1.0.0
@@ -14,7 +14,7 @@ BuildRequires:	autoconf >= 2.63
 BuildRequires:	automake >= 1:1.10
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gstreamer-devel >= 0.10.15
-BuildRequires:	gtk+2-devel >= 2:2.14.0
+BuildRequires:	gtk+2-devel >= 2:2.20.0
 BuildRequires:	gtk-doc >= 1.9
 BuildRequires:	libltdl-devel
 BuildRequires:	libtool >= 2:2.2.0
@@ -79,7 +79,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra-gtk
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	%{name}-gtk = %{version}-%{release}
-Requires:	gtk+2-devel >= 2:2.14.0
+Requires:	gtk+2-devel >= 2:2.20.0
 
 %description gtk-devel
 Header files for libcanberra-gtk library.
@@ -136,6 +136,7 @@ Pliki potrzebne do odtwarzania dźwięku logowania w GNOME.
 %{__automake}
 %configure \
 	--disable-schemas-install \
+	--disable-silent-rules \
 	--enable-alsa \
 	--enable-gstreamer \
 	--enable-null \
