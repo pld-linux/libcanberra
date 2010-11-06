@@ -1,8 +1,12 @@
+#
+# Conditional build:
+%bcond_with	gtk3		# gtk+3 support
+#
 Summary:	libcanberra - the portable sound event library
 Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Name:		libcanberra
 Version:	0.26
-Release:	1
+Release:	2
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
@@ -21,6 +25,10 @@ BuildRequires:	libtool >= 2:2.2.0
 BuildRequires:	libvorbis-devel
 BuildRequires:	pkgconfig
 BuildRequires:	pulseaudio-devel >= 0.9.11-1
+BuildRequires:	rpmbuild(macros) >= 1.527
+%if %{with gtk3}
+BuildRequires:	gtk+3-devel
+%endif
 Requires:	pulseaudio-libs >= 0.9.11-1
 Requires:	sound-theme-freedesktop
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -99,6 +107,44 @@ Static libcanberra-gtk library.
 %description gtk-static -l pl.UTF-8
 Statyczna biblioteka libcanberra-gtk.
 
+%package gtk3
+Summary:	GTK+ 3.x bindings for libcanberra library
+Summary(pl.UTF-8):	Wiązania GTK+ 3.x do biblioteki libcanberra
+Group:		X11/Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description gtk3
+GTK+ 3.x bindings for libcanberra library.
+
+%description gtk3 -l pl.UTF-8
+Wiązania GTK+ 3.x do biblioteki libcanberra.
+
+%package gtk3-devel
+Summary:	Header files for libcanberra-gtk3 library
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra-gtk3
+Group:		X11/Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+Requires:	%{name}-gtk3 = %{version}-%{release}
+Requires:	gtk+3-devel
+
+%description gtk3-devel
+Header files for libcanberra-gtk3 library.
+
+%description gtk3-devel -l pl.UTF-8
+Pliki nagłówkowe biblioteki libcanberra-gtk3.
+
+%package gtk3-static
+Summary:	Static libcanberra-gtk3 library
+Summary(pl.UTF-8):	Statyczna biblioteka libcanberra-gtk3
+Group:		X11/Development/Libraries
+Requires:	%{name}-gtk3-devel = %{version}-%{release}
+
+%description gtk3-static
+Static libcanberra-gtk3 library.
+
+%description gtk3-static -l pl.UTF-8
+Statyczna biblioteka libcanberra-gtk3.
+
 %package apidocs
 Summary:	libcanberra API documentation
 Summary(pl.UTF-8):	Dokumentacja API libcanberra
@@ -144,6 +190,7 @@ Pliki potrzebne do odtwarzania dźwięku logowania w GNOME.
 	--enable-pulse \
 	--enable-static \
 	--enable-gtk-doc \
+	%{__enable_disable gtk3} \
 	--with-html-dir=%{_gtkdocdir}
 %{__make}
 
@@ -156,6 +203,9 @@ rm -rf $RPM_BUILD_ROOT
 rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules/*.{a,la}
 rm $RPM_BUILD_ROOT%{backenddir}/*.{a,la}
 rm $RPM_BUILD_ROOT%{_datadir}/doc/libcanberra/README
+%if %{with gtk3}
+rm $RPM_BUILD_ROOT%{_libdir}/gtk-3.0/modules/*.{a,la}
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -165,6 +215,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %post	gtk -p /sbin/ldconfig
 %postun	gtk -p /sbin/ldconfig
+
+%post	gtk3 -p /sbin/ldconfig
+%postun	gtk3 -p /sbin/ldconfig
 
 %post gnome
 %gconf_schema_install libcanberra.schemas
@@ -199,7 +252,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files gtk
 %defattr(644,root,root,755)
+%if %{without gtk3}
 %attr(755,root,root) %{_bindir}/canberra-gtk-play
+%endif
 %attr(755,root,root) %{_libdir}/libcanberra-gtk.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libcanberra-gtk.so.0
 %attr(755,root,root) %{_libdir}/gtk-2.0/modules/libcanberra-gtk-module.so
@@ -215,6 +270,26 @@ rm -rf $RPM_BUILD_ROOT
 %files gtk-static
 %defattr(644,root,root,755)
 %{_libdir}/libcanberra-gtk.a
+
+%if %{with gtk3}
+%files gtk3
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/canberra-gtk-play
+%attr(755,root,root) %{_libdir}/libcanberra-gtk3.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libcanberra-gtk3.so.0
+%attr(755,root,root) %{_libdir}/gtk-3.0/modules/libcanberra-gtk-module.so
+%attr(755,root,root) %{_libdir}/gtk-3.0/modules/libcanberra-gtk3-module.so
+
+%files gtk3-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libcanberra-gtk3.so
+%{_libdir}/libcanberra-gtk3.la
+%{_pkgconfigdir}/libcanberra-gtk3.pc
+
+%files gtk3-static
+%defattr(644,root,root,755)
+%{_libdir}/libcanberra-gtk3.a
+%endif
 
 %files apidocs
 %defattr(644,root,root,755)
