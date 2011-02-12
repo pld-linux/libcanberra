@@ -1,12 +1,12 @@
 #
 # Conditional build:
-%bcond_with	gtk3		# gtk+3 support
+%bcond_without	gtk3		# gtk+3 support
 #
 Summary:	libcanberra - the portable sound event library
 Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Name:		libcanberra
 Version:	0.26
-Release:	2
+Release:	3
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
@@ -27,7 +27,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	pulseaudio-devel >= 0.9.11-1
 BuildRequires:	rpmbuild(macros) >= 1.527
 %if %{with gtk3}
-BuildRequires:	gtk+3-devel
+BuildRequires:	gtk+3-devel >= 3.0.0
 %endif
 Requires:	pulseaudio-libs >= 0.9.11-1
 Requires:	sound-theme-freedesktop
@@ -87,6 +87,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra-gtk
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	%{name}-gtk = %{version}-%{release}
+Requires:	%{name}-gtk-devel-common = %{version}-%{release}
 Requires:	gtk+2-devel >= 2:2.20.0
 
 %description gtk-devel
@@ -107,6 +108,17 @@ Static libcanberra-gtk library.
 %description gtk-static -l pl.UTF-8
 Statyczna biblioteka libcanberra-gtk.
 
+%package gtk-devel-common
+Summary:	Header files for libcanberra-gtk library
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra-gtk
+Group:		X11/Development/Libraries
+
+%description gtk-devel-common
+Header files for libcanberra-gtk library.
+
+%description gtk-devel-common -l pl.UTF-8
+Pliki nagłówkowe biblioteki libcanberra-gtk.
+
 %package gtk3
 Summary:	GTK+ 3.x bindings for libcanberra library
 Summary(pl.UTF-8):	Wiązania GTK+ 3.x do biblioteki libcanberra
@@ -125,6 +137,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra-gtk3
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	%{name}-gtk3 = %{version}-%{release}
+Requires:	%{name}-gtk-devel-common = %{version}-%{release}
 Requires:	gtk+3-devel
 
 %description gtk3-devel
@@ -200,11 +213,12 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-rm $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules/*.{a,la}
-rm $RPM_BUILD_ROOT%{backenddir}/*.{a,la}
-rm $RPM_BUILD_ROOT%{_datadir}/doc/libcanberra/README
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules/*.{a,la}
+%{__rm} $RPM_BUILD_ROOT%{backenddir}/*.{a,la}
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/doc/libcanberra/README
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
 %if %{with gtk3}
-rm $RPM_BUILD_ROOT%{_libdir}/gtk-3.0/modules/*.{a,la}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/gtk-3.0/modules/*.{a,la}
 %endif
 
 %clean
@@ -241,7 +255,6 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcanberra.so
-%{_libdir}/libcanberra.la
 %{_includedir}/canberra.h
 %{_pkgconfigdir}/libcanberra.pc
 %{_datadir}/vala/vapi/libcanberra.vapi
@@ -262,14 +275,16 @@ rm -rf $RPM_BUILD_ROOT
 %files gtk-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcanberra-gtk.so
-%{_libdir}/libcanberra-gtk.la
-%{_includedir}/canberra-gtk.h
 %{_pkgconfigdir}/libcanberra-gtk.pc
-%{_datadir}/vala/vapi/libcanberra-gtk.vapi
 
 %files gtk-static
 %defattr(644,root,root,755)
 %{_libdir}/libcanberra-gtk.a
+
+%files gtk-devel-common 
+%defattr(644,root,root,755)
+%{_includedir}/canberra-gtk.h
+%{_datadir}/vala/vapi/libcanberra-gtk.vapi
 
 %if %{with gtk3}
 %files gtk3
@@ -283,7 +298,6 @@ rm -rf $RPM_BUILD_ROOT
 %files gtk3-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcanberra-gtk3.so
-%{_libdir}/libcanberra-gtk3.la
 %{_pkgconfigdir}/libcanberra-gtk3.pc
 
 %files gtk3-static
