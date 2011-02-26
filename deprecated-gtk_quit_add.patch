@@ -1,0 +1,11 @@
+--- libcanberra-0.26/src/canberra-gtk-module.c~	2010-04-19 16:54:28.000000000 +0200
++++ libcanberra-0.26/src/canberra-gtk-module.c	2011-02-26 12:53:09.412538868 +0100
+@@ -964,7 +964,7 @@
+         install_hook(GTK_TYPE_WIDGET, "drag-failed", &signal_id_widget_drag_failed);
+         install_hook(GTK_TYPE_EXPANDER, "activate", &signal_id_expander_activate);
+ 
+-        gtk_quit_add(1, quit_handler, NULL);
++        g_atexit(quit_handler);
+ }
+ 
+ G_MODULE_EXPORT gchar* g_module_check_init(GModule *module);
