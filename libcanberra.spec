@@ -5,13 +5,12 @@
 Summary:	libcanberra - the portable sound event library
 Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Name:		libcanberra
-Version:	0.26
-Release:	4
+Version:	0.28
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
-# Source0-md5:	ee2c66ada7c851a4e7b6eb1682285a24
-Patch0:		deprecated-gtk_quit_add.patch
+# Source0-md5:	c198b4811598c4c161ff505e4531b02c
 URL:		http://0pointer.de/lennart/projects/libcanberra/
 BuildRequires:	GConf2-devel
 BuildRequires:	alsa-lib-devel >= 1.0.0
@@ -137,8 +136,8 @@ Summary:	Header files for libcanberra-gtk3 library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra-gtk3
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
-Requires:	%{name}-gtk3 = %{version}-%{release}
 Requires:	%{name}-gtk-devel-common = %{version}-%{release}
+Requires:	%{name}-gtk3 = %{version}-%{release}
 Requires:	gtk+3-devel
 
 %description gtk3-devel
@@ -186,7 +185,6 @@ Pliki potrzebne do odtwarzania dźwięku logowania w GNOME.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__gtkdocize} --docdir gtkdoc/
@@ -244,6 +242,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README
+%attr(755,root,root) %{_bindir}/canberra-boot
 %attr(755,root,root) %{_libdir}/libcanberra.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libcanberra.so.0
 %dir %{backenddir}
@@ -283,7 +282,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/libcanberra-gtk.a
 
-%files gtk-devel-common 
+%files gtk-devel-common
 %defattr(644,root,root,755)
 %{_includedir}/canberra-gtk.h
 %{_datadir}/vala/vapi/libcanberra-gtk.vapi
@@ -317,3 +316,4 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gdm/autostart/LoginWindow/libcanberra-ready-sound.desktop
 %{_datadir}/gnome/autostart/libcanberra-login-sound.desktop
 %attr(755,root,root) %{_datadir}/gnome/shutdown/libcanberra-logout-sound.sh
+%{_libdir}/gnome-settings-daemon-3.0/gtk-modules/canberra-gtk-module.desktop
