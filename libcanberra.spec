@@ -7,6 +7,7 @@ Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Name:		libcanberra
 Version:	0.26
 Release:	4
+Epoch:		1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
@@ -48,7 +49,7 @@ Mała i lekka implementacja specyfikacji XDG Sound Theme
 Summary:	Header files for libcanberra library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description devel
 Header files for libcanberra library.
@@ -60,7 +61,7 @@ Pliki nagłówkowe biblioteki libcanberra.
 Summary:	Static libcanberra library
 Summary(pl.UTF-8):	Statyczna biblioteka libcanberra
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 
 %description static
 Static libcanberra library.
@@ -72,7 +73,7 @@ Statyczna biblioteka libcanberra.
 Summary:	GTK+ bindings for libcanberra library
 Summary(pl.UTF-8):	Wiązania GTK+ do biblioteki libcanberra
 Group:		X11/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	libcanberra-gtk2
 Obsoletes:	libcanberra-gtk2
 
@@ -86,9 +87,9 @@ Wiązania GTK+ do biblioteki libcanberra.
 Summary:	Header files for libcanberra-gtk library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra-gtk
 Group:		X11/Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
-Requires:	%{name}-gtk = %{version}-%{release}
-Requires:	%{name}-gtk-devel-common = %{version}-%{release}
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
+Requires:	%{name}-gtk = %{epoch}:%{version}-%{release}
+Requires:	%{name}-gtk-devel-common = %{epoch}:%{version}-%{release}
 Requires:	gtk+2-devel >= 2:2.20.0
 
 %description gtk-devel
@@ -101,7 +102,7 @@ Pliki nagłówkowe biblioteki libcanberra-gtk.
 Summary:	Static libcanberra-gtk library
 Summary(pl.UTF-8):	Statyczna biblioteka libcanberra-gtk
 Group:		X11/Development/Libraries
-Requires:	%{name}-gtk-devel = %{version}-%{release}
+Requires:	%{name}-gtk-devel = %{epoch}:%{version}-%{release}
 
 %description gtk-static
 Static libcanberra-gtk library.
@@ -124,7 +125,7 @@ Pliki nagłówkowe biblioteki libcanberra-gtk.
 Summary:	GTK+ 3.x bindings for libcanberra library
 Summary(pl.UTF-8):	Wiązania GTK+ 3.x do biblioteki libcanberra
 Group:		X11/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description gtk3
 GTK+ 3.x bindings for libcanberra library.
@@ -136,9 +137,9 @@ Wiązania GTK+ 3.x do biblioteki libcanberra.
 Summary:	Header files for libcanberra-gtk3 library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra-gtk3
 Group:		X11/Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
-Requires:	%{name}-gtk3 = %{version}-%{release}
-Requires:	%{name}-gtk-devel-common = %{version}-%{release}
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
+Requires:	%{name}-gtk3 = %{epoch}:%{version}-%{release}
+Requires:	%{name}-gtk-devel-common = %{epoch}:%{version}-%{release}
 Requires:	gtk+3-devel
 
 %description gtk3-devel
@@ -151,7 +152,7 @@ Pliki nagłówkowe biblioteki libcanberra-gtk3.
 Summary:	Static libcanberra-gtk3 library
 Summary(pl.UTF-8):	Statyczna biblioteka libcanberra-gtk3
 Group:		X11/Development/Libraries
-Requires:	%{name}-gtk3-devel = %{version}-%{release}
+Requires:	%{name}-gtk3-devel = %{epoch}:%{version}-%{release}
 
 %description gtk3-static
 Static libcanberra-gtk3 library.
@@ -176,7 +177,7 @@ Summary:	Files required to play login sound in GNOME
 Summary(pl.UTF-8):	Pliki potrzebne do odtwarzania dźwięku logowania w GNOME
 Group:		Applications
 Requires(post,preun):	GConf2
-Requires:	%{name}-gtk = %{version}-%{release}
+Requires:	%{name}-gtk = %{epoch}:%{version}-%{release}
 
 %description gnome
 Files required to play login sound in GNOME.
