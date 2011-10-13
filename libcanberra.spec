@@ -26,11 +26,15 @@ BuildRequires:	libvorbis-devel
 BuildRequires:	pkgconfig
 BuildRequires:	pulseaudio-devel >= 0.9.11-1
 BuildRequires:	rpmbuild(macros) >= 1.527
+BuildRequires:	tdb-devel >= 2:1.1
+BuildRequires:	udev-devel >= 160
 %if %{with gtk3}
 BuildRequires:	gtk+3-devel >= 3.0.0
 %endif
 Requires:	pulseaudio-libs >= 0.9.11-1
 Requires:	sound-theme-freedesktop
+Requires:	tdb >= 2:1.1
+Requires:	udev-libs >= 160
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		backenddir	%{_libdir}/libcanberra-%{version}
@@ -67,6 +71,18 @@ Static libcanberra library.
 %description static -l pl.UTF-8
 Statyczna biblioteka libcanberra.
 
+%package -n vala-libcanberra
+Summary:	libcanberra API for Vala language
+Summary(pl.UTF-8):	API biblioteki libcanberra dla języka Vala
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+
+%description -n vala-libcanberra
+libcanberra API for Vala language.
+
+%description -n vala-libcanberra -l pl.UTF-8
+API biblioteki libcanberra dla języka Vala.
+
 %package gtk
 Summary:	GTK+ bindings for libcanberra library
 Summary(pl.UTF-8):	Wiązania GTK+ do biblioteki libcanberra
@@ -81,9 +97,20 @@ GTK+ bindings for libcanberra library.
 %description gtk -l pl.UTF-8
 Wiązania GTK+ do biblioteki libcanberra.
 
+%package gtk-devel-common
+Summary:	Common header file for libcanberra-gtk libraries
+Summary(pl.UTF-8):	Wspólny plik nagłówkowy bibliotek libcanberra-gtk
+Group:		X11/Development/Libraries
+
+%description gtk-devel-common
+Common header file for libcanberra-gtk libraries.
+
+%description gtk-devel-common -l pl.UTF-8
+Wspólny plik nagłówkowy bibliotek libcanberra-gtk.
+
 %package gtk-devel
-Summary:	Header files for libcanberra-gtk library
-Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra-gtk
+Summary:	Development files for libcanberra-gtk library
+Summary(pl.UTF-8):	Pliki programistyczne biblioteki libcanberra-gtk
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	%{name}-gtk = %{version}-%{release}
@@ -91,10 +118,10 @@ Requires:	%{name}-gtk-devel-common = %{version}-%{release}
 Requires:	gtk+2-devel >= 2:2.20.0
 
 %description gtk-devel
-Header files for libcanberra-gtk library.
+Development files for libcanberra-gtk library.
 
 %description gtk-devel -l pl.UTF-8
-Pliki nagłówkowe biblioteki libcanberra-gtk.
+Pliki programistyczne biblioteki libcanberra-gtk.
 
 %package gtk-static
 Summary:	Static libcanberra-gtk library
@@ -108,16 +135,18 @@ Static libcanberra-gtk library.
 %description gtk-static -l pl.UTF-8
 Statyczna biblioteka libcanberra-gtk.
 
-%package gtk-devel-common
-Summary:	Header files for libcanberra-gtk library
-Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra-gtk
-Group:		X11/Development/Libraries
+%package -n vala-libcanberra-gtk
+Summary:	libcanberra-gtk API for Vala language
+Summary(pl.UTF-8):	API biblioteki libcanberra-gtk dla języka Vala
+Group:		Development/Libraries
+Requires:	%{name}-gtk-devel-common = %{version}-%{release}
+Requires:	vala-libcanberra = %{version}-%{release}
 
-%description gtk-devel-common
-Header files for libcanberra-gtk library.
+%description -n vala-libcanberra-gtk
+libcanberra-gtk API for Vala language.
 
-%description gtk-devel-common -l pl.UTF-8
-Pliki nagłówkowe biblioteki libcanberra-gtk.
+%description -n vala-libcanberra-gtk -l pl.UTF-8
+API biblioteki libcanberra-gtk dla języka Vala.
 
 %package gtk3
 Summary:	GTK+ 3.x bindings for libcanberra library
@@ -132,8 +161,8 @@ GTK+ 3.x bindings for libcanberra library.
 Wiązania GTK+ 3.x do biblioteki libcanberra.
 
 %package gtk3-devel
-Summary:	Header files for libcanberra-gtk3 library
-Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcanberra-gtk3
+Summary:	Development files for libcanberra-gtk3 library
+Summary(pl.UTF-8):	Pliki programistyczne biblioteki libcanberra-gtk3
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	%{name}-gtk-devel-common = %{version}-%{release}
@@ -141,10 +170,10 @@ Requires:	%{name}-gtk3 = %{version}-%{release}
 Requires:	gtk+3-devel
 
 %description gtk3-devel
-Header files for libcanberra-gtk3 library.
+Development files for libcanberra-gtk3 library.
 
 %description gtk3-devel -l pl.UTF-8
-Pliki nagłówkowe biblioteki libcanberra-gtk3.
+Pliki programistyczne biblioteki libcanberra-gtk3.
 
 %package gtk3-static
 Summary:	Static libcanberra-gtk3 library
@@ -258,11 +287,14 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libcanberra.so
 %{_includedir}/canberra.h
 %{_pkgconfigdir}/libcanberra.pc
-%{_datadir}/vala/vapi/libcanberra.vapi
 
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libcanberra.a
+
+%files -n vala-libcanberra
+%defattr(644,root,root,755)
+%{_datadir}/vala/vapi/libcanberra.vapi
 
 %files gtk
 %defattr(644,root,root,755)
@@ -273,6 +305,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libcanberra-gtk.so.0
 %attr(755,root,root) %{_libdir}/gtk-2.0/modules/libcanberra-gtk-module.so
 
+%files gtk-devel-common
+%defattr(644,root,root,755)
+%{_includedir}/canberra-gtk.h
+
 %files gtk-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcanberra-gtk.so
@@ -282,9 +318,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/libcanberra-gtk.a
 
-%files gtk-devel-common
+%files -n vala-libcanberra-gtk
 %defattr(644,root,root,755)
-%{_includedir}/canberra-gtk.h
 %{_datadir}/vala/vapi/libcanberra-gtk.vapi
 
 %if %{with gtk3}
