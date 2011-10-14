@@ -31,6 +31,8 @@ BuildRequires:	udev-devel >= 160
 %if %{with gtk3}
 BuildRequires:	gtk+3-devel >= 3.0.0
 %endif
+Requires:	alsa-lib >= 1.0.0
+Requires:	gstreamer >= 0.10.15
 Requires:	pulseaudio-libs >= 0.9.11-1
 Requires:	sound-theme-freedesktop
 Requires:	tdb >= 2:1.1
@@ -88,6 +90,7 @@ Summary:	GTK+ bindings for libcanberra library
 Summary(pl.UTF-8):	Wiązania GTK+ do biblioteki libcanberra
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	gtk+2 >= 2:2.20.0
 Provides:	libcanberra-gtk2
 Obsoletes:	libcanberra-gtk2
 
@@ -167,7 +170,7 @@ Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	%{name}-gtk-devel-common = %{version}-%{release}
 Requires:	%{name}-gtk3 = %{version}-%{release}
-Requires:	gtk+3-devel
+Requires:	gtk+3-devel >= 3.0.0
 
 %description gtk3-devel
 Development files for libcanberra-gtk3 library.
