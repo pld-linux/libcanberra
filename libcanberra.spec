@@ -1,12 +1,13 @@
 #
 # Conditional build:
 %bcond_without	gtk3		# gtk+3 support
+%bcond_with	gnome2
 #
 Summary:	libcanberra - the portable sound event library
 Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Name:		libcanberra
 Version:	0.28
-Release:	2
+Release:	3
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
@@ -351,7 +352,9 @@ rm -rf $RPM_BUILD_ROOT
 %files gnome
 %defattr(644,root,root,755)
 %{_sysconfdir}/gconf/schemas/libcanberra.schemas
+%if %{with gnome2}
 %{_datadir}/gdm/autostart/LoginWindow/libcanberra-ready-sound.desktop
+%endif
 %{_datadir}/gnome/autostart/libcanberra-login-sound.desktop
 %attr(755,root,root) %{_datadir}/gnome/shutdown/libcanberra-logout-sound.sh
 %{_libdir}/gnome-settings-daemon-3.0/gtk-modules/canberra-gtk-module.desktop
