@@ -1,12 +1,12 @@
 #
 # Conditional build:
-%bcond_without	gtk3		# gtk+3 support
+%bcond_with	gtk3		# gtk+3 support
 #
 Summary:	libcanberra - the portable sound event library
 Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Name:		libcanberra
 Version:	0.26
-Release:	5
+Release:	6
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
