@@ -6,20 +6,23 @@
 Summary:	libcanberra - the portable sound event library
 Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Name:		libcanberra
-Version:	0.28
-Release:	5
+Version:	0.30
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
-Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
-# Source0-md5:	c198b4811598c4c161ff505e4531b02c
+Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.xz
+# Source0-md5:	34cb7e4430afaf6f447c4ebdb9b42072
 URL:		http://0pointer.de/lennart/projects/libcanberra/
-BuildRequires:	GConf2-devel
 BuildRequires:	alsa-lib-devel >= 1.0.0
-BuildRequires:	autoconf >= 2.63
-BuildRequires:	automake >= 1:1.10
+BuildRequires:	autoconf >= 2.68
+BuildRequires:	automake >= 1:1.11
 BuildRequires:	docbook-dtd412-xml
-BuildRequires:	gstreamer-devel >= 0.10.15
+BuildRequires:	glib2-devel >= 1:2.32.0
+BuildRequires:	gstreamer-devel >= 1.0.0
 BuildRequires:	gtk+2-devel >= 2:2.20.0
+%if %{with gtk3}
+BuildRequires:	gtk+3-devel >= 3.0.0
+%endif
 BuildRequires:	gtk-doc >= 1.9
 BuildRequires:	libltdl-devel
 BuildRequires:	libtool >= 2:2.2.0
@@ -29,13 +32,13 @@ BuildRequires:	pulseaudio-devel >= 0.9.11-1
 BuildRequires:	rpmbuild(macros) >= 1.527
 BuildRequires:	tdb-devel >= 2:1.1
 BuildRequires:	udev-devel >= 160
-%if %{with gtk3}
-BuildRequires:	gtk+3-devel >= 3.0.0
-%endif
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	xz
 Requires:	alsa-lib >= 1.0.0
-Requires:	gstreamer >= 0.10.15
+Requires:	gstreamer >= 1.0.0
 Requires:	pulseaudio-libs >= 0.9.11-1
 Requires:	sound-theme-freedesktop
+Requires:       systemd-units >= 0.38
 Requires:	tdb >= 2:1.1
 Requires:	udev-libs >= 160
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -227,7 +230,6 @@ Pliki potrzebne do odtwarzania dźwięku logowania w GNOME.
 %{__autoheader}
 %{__automake}
 %configure \
-	--disable-schemas-install \
 	--disable-silent-rules \
 	--enable-alsa \
 	--enable-gstreamer \
@@ -237,7 +239,8 @@ Pliki potrzebne do odtwarzania dźwięku logowania w GNOME.
 	--enable-static \
 	--enable-gtk-doc \
 	%{__enable_disable gtk3} \
-	--with-html-dir=%{_gtkdocdir}
+	--with-html-dir=%{_gtkdocdir} \
+	--with-systemdsystemunitdir=%{systemdunitdir}
 %{__make}
 
 %install
@@ -266,12 +269,6 @@ rm -rf $RPM_BUILD_ROOT
 %post	gtk3 -p /sbin/ldconfig
 %postun	gtk3 -p /sbin/ldconfig
 
-%post gnome
-%gconf_schema_install libcanberra.schemas
-
-%preun gnome
-%gconf_schema_uninstall libcanberra.schemas
-
 %files
 %defattr(644,root,root,755)
 %doc README
@@ -285,6 +282,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{backenddir}/libcanberra-pulse.so
 %attr(755,root,root) %{backenddir}/libcanberra-null.so
 %attr(755,root,root) %{backenddir}/libcanberra-multi.so
+%{systemdunitdir}/canberra-system-bootup.service
+%{systemdunitdir}/canberra-system-shutdown-reboot.service
+%{systemdunitdir}/canberra-system-shutdown.service
 
 %files devel
 %defattr(644,root,root,755)
@@ -351,7 +351,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files gnome
 %defattr(644,root,root,755)
-%{_sysconfdir}/gconf/schemas/libcanberra.schemas
 %if %{with gnome2}
 %{_datadir}/gdm/autostart/LoginWindow/libcanberra-ready-sound.desktop
 %endif
