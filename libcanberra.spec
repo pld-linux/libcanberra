@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	gtk3		# gtk+3 support
-%bcond_with	gnome2
+%bcond_with	gnome2		# with GDK ready sound
 #
 Summary:	libcanberra - the portable sound event library
 Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
@@ -31,16 +31,18 @@ BuildRequires:	pkgconfig
 BuildRequires:	pulseaudio-devel >= 0.9.11-1
 BuildRequires:	rpmbuild(macros) >= 1.527
 BuildRequires:	tdb-devel >= 2:1.1
-BuildRequires:	udev-devel >= 160
+BuildRequires:	udev-devel >= 1:160
 BuildRequires:	tar >= 1:1.22
+BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xz
 Requires:	alsa-lib >= 1.0.0
+Requires:	glib2 >= 1:2.32.0
 Requires:	gstreamer >= 1.0.0
 Requires:	pulseaudio-libs >= 0.9.11-1
 Requires:	sound-theme-freedesktop
 Requires:       systemd-units >= 0.38
 Requires:	tdb >= 2:1.1
-Requires:	udev-libs >= 160
+Requires:	udev-libs >= 1:160
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		backenddir	%{_libdir}/libcanberra-%{version}
