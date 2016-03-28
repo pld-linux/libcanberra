@@ -2,12 +2,12 @@
 # Conditional build:
 %bcond_without	gtk3		# gtk+3 support
 %bcond_with	gnome2		# with GDK ready sound
-#
+
 Summary:	libcanberra - the portable sound event library
 Summary(pl.UTF-8):	libcanberra - przenośna biblioteka zdarzeń dźwiękowych
 Name:		libcanberra
 Version:	0.30
-Release:	3
+Release:	4
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.xz
@@ -30,9 +30,9 @@ BuildRequires:	libvorbis-devel
 BuildRequires:	pkgconfig
 BuildRequires:	pulseaudio-devel >= 0.9.11-1
 BuildRequires:	rpmbuild(macros) >= 1.527
+BuildRequires:	tar >= 1:1.22
 BuildRequires:	tdb-devel >= 2:1.1
 BuildRequires:	udev-devel >= 1:160
-BuildRequires:	tar >= 1:1.22
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xz
 Requires:	alsa-lib >= 1.0.0
@@ -40,7 +40,7 @@ Requires:	glib2 >= 1:2.32.0
 Requires:	gstreamer >= 1.0.0
 Requires:	pulseaudio-libs >= 0.9.11-1
 Requires:	sound-theme-freedesktop
-Requires:       systemd-units >= 0.38
+Requires:	systemd-units >= 0.38
 Requires:	tdb >= 2:1.1
 Requires:	udev-libs >= 1:160
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -84,6 +84,9 @@ Summary:	libcanberra API for Vala language
 Summary(pl.UTF-8):	API biblioteki libcanberra dla języka Vala
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description -n vala-libcanberra
 libcanberra API for Vala language.
@@ -253,7 +256,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules/*.{a,la}
 %{__rm} $RPM_BUILD_ROOT%{backenddir}/*.{a,la}
-%{__rm} $RPM_BUILD_ROOT%{_datadir}/doc/libcanberra/README
+%{__rm} $RPM_BUILD_ROOT%{_docdir}/libcanberra/README
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
 %if %{with gtk3}
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/gtk-3.0/modules/*.{a,la}
