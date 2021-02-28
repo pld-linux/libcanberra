@@ -84,9 +84,7 @@ Summary:	libcanberra API for Vala language
 Summary(pl.UTF-8):	API biblioteki libcanberra dla języka Vala
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
-%if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
-%endif
 
 %description -n vala-libcanberra
 libcanberra API for Vala language.
@@ -204,9 +202,7 @@ Summary:	libcanberra API documentation
 Summary(pl.UTF-8):	Dokumentacja API libcanberra
 Group:		Documentation
 Requires:	gtk-doc-common
-%if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
-%endif
 
 %description apidocs
 libcanberra API documentation.
