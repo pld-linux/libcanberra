@@ -226,7 +226,7 @@ Pliki potrzebne do odtwarzania dźwięku logowania w GNOME.
 
 %prep
 %setup -q
-%patch0 -p1
+%patch -P0 -p1
 
 %build
 %{__gtkdocize} --docdir gtkdoc/
